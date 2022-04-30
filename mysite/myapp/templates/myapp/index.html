@@ -1,0 +1,170 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Home</title>
+</head>
+<body >
+
+  <nav class="bg-blue-800 shadow-lg py-2 md:py-4">
+    <div class="container mx-auto px-4 md:flex md:items-center">
+      <a href="#" class='font-bold text-xl text-white'>PropFolio</a>
+    </div>
+  </nav>
+
+  <div class="bg-blue-200 mr-8 ml-8 p-4">
+    
+    <div class="mr-5 mt-2 font-bold">Upload & Visualize the property data..</div>
+  </div>
+
+  <div class="flex">
+        <div clsass="w-1/2">
+
+          <div class="container mx-auto w-full max-w-xs">
+
+            <form class="bg-white rounded px-8 pt-6 pb-8 mb-5" method="POST" action="" enctype="multipart/form-data" name='myform'>
+              {% csrf_token %}
+              <input class='inline-block font-bold text-sm text-blue-500' type="file" name="file" id="file">
+              <input class="bg-blue-500 text-white font-bold py-2 px-4 mt-4 rounded hover:bg-blue-700"  type="submit" name="submit" id="submit" value='Submit'/>
+          </form>
+
+          </div>
+        </div> 
+        <div clsass="w-1/2">
+
+        </div>
+    </div>
+    <!-- Creating table for csv data -->
+    <div class="mb-2 font-bold text-center text-blue-500">Property Stats</div>
+    <div class="container mr-auto flex justify-center">
+      <div class="flex flex-col">
+        <div class="w-full">
+          <div class="border-b border-gray-200 shadow">
+
+            <table id="dataTable" class="bg-gray-100">
+              <thead>
+                  <tr>
+                    <th class="px-6 py-2 text-md text-gray-500">Property Name</th>
+                    <th class="px-6 py-2 text-md text-gray-500">Price</th>
+                    <th class="px-6 py-2 text-md text-gray-500">Rent</th>
+                    <th class="px-6 py-2 text-md text-gray-500">EMI</th>
+                    <th class="px-6 py-2 text-md text-gray-500">Tax</th>
+                    <th class="px-6 py-2 text-md text-gray-500">Expense</th>
+                    <th class="px-6 py-2 text-md text-gray-500">Net Expense</th>
+                    <th class="px-6 py-2 text-md text-gray-500">Net Income</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% for obj in data_objects %}
+                <tr>
+                  <td class="px-6 py-4 text-sm text-gray-500 font-bold">  {{obj.name}} </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">  {{obj.price}} </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">  {{obj.rent}} </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">  {{obj.emi}} </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">  {{obj.tax}} </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">  {{obj.exp}} </td>
+                  <td class="px-6 py-4 text-sm text-red-400">  {{obj.expenses_monthly}} </td>
+                  <td class="px-6 py-4 text-sm text-green-500 font-bold ">  {{obj.monthly_income}} </td>
+                </tr>
+                {% endfor %}
+                    
+          
+                <tr class='overline decoration-6'>
+                  <td id= "total" class="px-6 py-4 text-sm text-gray-500 font-bold">  Total </td>
+                  <td id="totalPrice" class="px-6 py-4 text-sm text-gray-500 font-bold"> 0  </td>
+                  <td id= "totalRent" class="px-6 py-4 text-sm text-gray-500 font-bold"> 0  </td>
+                  <td id= "totalEMI" class="px-6 py-4 text-sm text-gray-500 font-bold">  0 </td>
+                  <td id= "totalTax" class="px-6 py-4 text-sm text-gray-500 font-bold"> 0 </td>
+                  <td id= "totalExpense" class="px-6 py-4 text-sm text-gray-500 font-bold">  0 </td>
+                  <td id= "totalMonthlyExpense" class="px-6 py-4 text-sm text-gray-500 font-bold"> 0  </td>
+                  <td id= "totalMonthlyIncome" class="px-6 py-4 text-sm text-gray-500 font-bold">  0 </td>
+                </tr>
+              </tbody>
+            </table>
+            
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Income and Expense bar charts -->
+    <div class="container flex gap-8 m-10">
+      <div class="w-1/2">
+        <div class="text-blue-600 font-bold m-10">Income Chart
+        </div>
+        <div>
+          <canvas id="myChart" width="250" height="200"></canvas>
+        </div>
+      </div>
+
+      <div class="w-1/2">
+        <div class="text-blue-600 font-bold m-10">Expenses Chart
+        </div>
+        <div>
+          <canvas id="myExpenseChart" width="250" height="200"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+<!-- Income and Expense spread charts -->
+    <div class="container flex gap-8 m-10">
+      <div class="w-1/2">
+        <div class="text-blue-600 font-bold m-10">Expense Spread Chart 
+        </div>
+        <div>
+          <canvas id="expenseSpreadChart" width="250" height="200"></canvas>
+        </div>
+      </div>
+
+      <div class="w-1/2">
+        <div class="text-blue-600 font-bold m-10">Income Spread Chart 
+        </div>
+        <div>
+          <canvas id="incomeSpreadChart" width="250" height="150"></canvas>
+        </div>
+      </div>
+
+      
+
+    </div>
+
+
+    <footer class="bg-blue-800 text-center lg:text-left">
+      <div class="text-white text-center p-4" style="background-color: rgba(0, 0, 0, 0.2);">
+        ©2022 Built by
+        <a class="text-white" href="https://www.linkedin.com/in/siddharthbadal/">siddharth</a>
+      </div>
+    </footer>
+
+
+
+
+
+
+  
+  
+
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+  <script src="{% static 'myapp/js/script.js' %}">
+  </script>
+  <script src="{% static 'myapp/js/barchart.js' %}">
+  </script>
+  <script src="{% static 'myapp/js/expenseincome.js' %}">
+  </script>
+
+
+
+  
+</body>
+</html>
